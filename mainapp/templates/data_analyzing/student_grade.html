@@ -71,8 +71,7 @@
                                     <div class="modal-content">
                                         <form method="POST" action="{% url 'save_grade' std.id %}" class="std_edit">
                                             {% csrf_token %}  
-                                            <div class="form-content">
-                                                
+                                            <div class="form-content">                                     
                                             </div>
                                         </form>
                                     </div>
@@ -83,8 +82,7 @@
                             <form method="POST" action="{% url 'delete_grade' std.id %}" class="std_delete" data-name="{{std.name}}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-danger" data-id='{{std.id}}'>刪除</button>
-                            </form>
-                            
+                            </form>                        
                         </td>
                     </tr>
                     {% endfor %}
@@ -103,5 +101,3 @@
 </div>
 {% endblock content %}
 
-{% block scripts %}
-{% endblock scripts %}
