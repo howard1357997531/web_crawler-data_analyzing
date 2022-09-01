@@ -1,0 +1,63 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %}<title>Taiwan_railway</title>{% endblock title %}
+{% block css %}
+<style>
+  th:nth-child(1) {width: 30%; }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+          <div class="text-center">
+            <h1>查找台灣鐵路班次</h1>
+            <p>網址 : <a href="https://www.railway.gov.tw/tra-tip-web/tip" target="_blank">https://www.railway.gov.tw/tra-tip-web/tip</a></p>
+          </div>
+          
+          <div style="margin: 30px 0 0 100px  ;">
+            出發站 : 
+            <select class="form-select form-select-sm d-inline-block me-3" id="start_station" style="width: 10%;" aria-label=".form-select-sm example">
+              <option selected>--------</option>
+              {% for key,value in stations.items %}
+              <option value="{{value}}">{{key}}</option>
+              {% endfor %}
+            </select>
+            抵達站 : 
+            <select class="form-select form-select-sm d-inline-block me-3" id="end_station" style="width: 10%;" aria-label=".form-select-sm example">
+              <option selected>--------</option>
+              {% for key,value in stations.items %}
+              <option value="{{value}}">{{key}}</option>
+              {% endfor %}
+            </select>
+            日期 : 
+            <input type="date" class="me-3" id="date" required>
+            時段起迄 : 
+            <select class="form-select form-select-sm d-inline-block me-2" id="start_time" style="width: 10%;" aria-label=".form-select-sm example">
+              {% for time in times %}
+              <option value="{{time}}">{{time}}</option>
+              {% endfor %}
+            </select>
+             至 
+            <select class="form-select form-select-sm d-inline-block ms-2" id="end_time" style="width: 10%;" aria-label=".form-select-sm example">
+              <option value="23:59" selected>23:59</option>
+              {% for time in endtimes %}
+              <option value="{{time}}">{{time}}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-info btn-sm ms-5" id="taiwan_railwayBtn">送出</button>
+          </div>
+          <hr>
+
+          <div id="ajaxtable"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+{% endblock scripts %}
+

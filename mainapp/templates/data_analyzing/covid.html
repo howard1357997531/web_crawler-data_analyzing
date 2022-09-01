@@ -1,0 +1,807 @@
+{% extends 'layout/base.html' %}
+{% block title %}<title>Covid</title>{% endblock title %}
+{% block css %}
+<style>
+  td:nth-child(1) {width: 40%;}
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12 mx-auto mb-3">
+          <div class="text-center">
+            <h1 style="font-size: 50px;">台灣疫情報告</h1>
+            <h6 class="text-info">[ 數據來源: 衛福部疾管署 ]</h6>
+            <p>網址 : <a href="https://covid-19.nchc.org.tw/dt_005-covidTable_taiwan.php" target="_blank">https://covid-19.nchc.org.tw/dt_005-covidTable_taiwan.php</a></p>
+          </div>
+        </div>
+        <div class="col-md-10 mx-auto">
+          <div class="my-3"><div class="text-center mb-3">
+            <h1 class="text-center mt-4">台灣COVID-19 七日平均確診數</h1>
+            <p>
+              <span class="text-info">[ 數據來源 ]</span>&nbsp;
+              <a href="https://covid-19.nchc.org.tw/api.php?limited=TWN&tableID=4051" target="_blank">"https://covid-19.nchc.org.tw/api.php?limited=TWN&tableID=4051"</a>
+            </p>
+          </div>
+            <canvas id="myChart"></canvas>
+          </div>
+          <div class="my-3">
+            <div class="my-3"><div class="text-center mb-3">
+              <h1 class="text-center mt-4">各國COVID-19 七日平均確診數</h1>
+              <p>
+                <span class="text-info">[ 數據來源 ]</span>&nbsp;
+                <a href="https://covid-19.nchc.org.tw/dt_005-covidTable_7day_confirmed.php" target="_blank">"https://covid-19.nchc.org.tw/dt_005-covidTable_7day_confirmed.php"</a>
+              </p>
+            </div>
+            <canvas id="myChart2" class="mb-2"></canvas>
+            <div class="text-center" >
+              <div class="form-check form-check-inline me-4">
+                <input class="form-check-input" type="radio" onclick="updateChart(this)"
+                name="inlineRadioOptions" id="inlineRadio1" value="0" checked>
+                <label class="form-check-label" for="inlineRadio1">平均確診數(近七日)</label>
+              </div>
+              <div class="form-check form-check-inline me-4">
+                <input class="form-check-input" type="radio" onclick="updateChart(this)"
+                name="inlineRadioOptions" id="inlineRadio2" value="1" >
+                <label class="form-check-label" for="inlineRadio2">總確診數</label>
+              </div>
+              <div class="form-check form-check-inline me-4">
+                <input class="form-check-input" type="radio" onclick="updateChart(this)"
+                name="inlineRadioOptions" id="inlineRadio3" value="2" >
+                <label class="form-check-label" for="inlineRadio3">總確診數/每百萬人</label>
+              </div>
+              <div class="form-check form-check-inline me-4">
+                <input class="form-check-input" type="radio" onclick="updateChart(this)"
+                name="inlineRadioOptions" id="inlineRadio4" value="3" >
+                <label class="form-check-label" for="inlineRadio4">新增確診數/每百萬人</label>
+              </div>
+              <div class="form-check form-check-inline me-4">
+                <input class="form-check-input" type="radio" onclick="updateChart(this)"
+                name="inlineRadioOptions" id="inlineRadio5" value="4" >
+                <label class="form-check-label" for="inlineRadio5">平均新增確診數(近七日)/每百萬人</label>
+              </div>
+            </div>
+        </div>
+        <div class="my-3">
+          <div class="text-center mb-3">
+            <h1 class="text-center mt-4">台灣COVID-19 本土確診案例表單</h1>
+            <p>
+              <span class="text-info">[ 數據來源 ]</span>&nbsp;
+              <a href="https://covid-19.nchc.org.tw/api.php?tableID=4004" target="_blank">"https://covid-19.nchc.org.tw/api.php?tableID=4004"</a>
+            </p>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <canvas id="myChart3" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-4">
+              <canvas id="myChart4" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-4">
+              <canvas id="myChart5" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-4 mt-5">
+              <canvas id="myChart6" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-4 mt-5">
+              <canvas id="myChart7" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-4 mt-5">
+              <canvas id="myChart8" width="300" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="my-3">
+          <div class="text-center mb-3">
+            <h1 class="text-center my-4">台灣COVID-19 新增死亡個案表</h1>
+            <p>
+              <span class="text-info">[ 數據來源 ]</span>&nbsp;
+              <a href="https://covid-19.nchc.org.tw/api.php?tableID=4002" target="_blank">"https://covid-19.nchc.org.tw/api.php?tableID=4002"</a>
+            </p>
+          </div>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+              <canvas id="myChart9" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-5">
+              <canvas id="myChart10" width="300" height="300"></canvas>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-10 my-5 mx-auto">
+              <canvas id="myChart11"></canvas>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js" integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-stacked100@1.0.0"></script>
+
+<script type="">
+   Chart.register(ChartjsPluginStacked100.default);
+  //First chart
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        datasets: [{
+          label: '台灣COVID-19每日新增確診 (自 2022/1/1 起)',
+          data: {{datas|safe}},                          
+          backgroundColor: 'rgba(132, 0, 255, 0.29)',
+          borderColor: 'rgba(132, 0, 255, 0.59)',
+          borderWidth: 1,
+          order: 2,
+          },{
+          label: '七日平均移動值',
+          backgroundColor: 'rgba(0, 255, 72, 0.705)',
+          borderColor: 'rgba(0, 255, 72, 0.705)',
+          data: {{datas_7|safe}},
+          tension:0.4,
+          pointRadius: 2.5,  
+          pointBackgroundColor: 'white',  
+        //pointBorderWidth: 2,
+          pointHoverRadius: 7,
+          pointHoverBorderWidth: 3,
+          hoverBackgroundColor: 'white',
+          borderWidth: 1.5,
+          order: 1,  
+          type: 'line'
+          }]
+    },
+    options: {
+      parsing: {
+        xAxisKey: '1',
+        yAxisKey: '2',
+      },
+    }
+  });
+  
+  //Second chart
+  const ctx2 = document.getElementById('myChart2').getContext('2d');
+  const myChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        datasets: [{
+          label: '平均新增確診數(近七日)',
+          data: {{country|safe}},
+          backgroundColor: 'rgba(25, 0, 255, 0.245)',
+          borderColor: 'rgba(25, 0, 255, 0.845)',
+          borderWidth: 1,
+          hidden: false,
+          },{
+          label: '總確診數',
+          data: {{country|safe}},
+          backgroundColor: 'rgba(254, 254, 17, 0.585)',
+          borderColor: 'rgba(145, 145, 9, 0.985)',
+          borderWidth: 1,
+          hidden: true,
+          },{
+          label: '總確診數/每百萬人',
+          data: {{country|safe}},
+          backgroundColor: 'rgba(255, 159, 64, 0.4)',
+          borderColor: 'rgba(255, 159, 64, 0.9)',
+          borderWidth: 1,
+          hidden: true,
+          },{
+          label: '新增確診數/每百萬人',
+          data: {{country|safe}},
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          hidden: true,
+          },{
+          label: '平均新增確診數(近七日)/每百萬人',
+          data: {{country|safe}},
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          hidden: true,
+        }]
+    },
+    options: {
+      parsing: {
+        xAxisKey: '1',
+        yAxisKey: '2',
+      },
+    }
+  });
+  
+  function updateChart(dataset) {
+    console.log(dataset.value); 
+    const isDataShown = myChart2.isDatasetVisible(dataset.value);  
+    console.log(isDataShown);
+    if (isDataShown === false) {
+      if (dataset.value == 0) {
+        myChart2.config.options.parsing.xAxisKey = '1'; myChart2.config.options.parsing.yAxisKey = '2';
+        myChart2.hide(1); myChart2.hide(2) ;myChart2.hide(3); myChart2.hide(4); 
+        myChart2.show(dataset.value);
+      }
+      if (dataset.value == 1) {
+        myChart2.config.options.parsing.xAxisKey = '3'; myChart2.config.options.parsing.yAxisKey = '4';
+        myChart2.hide(0); myChart2.hide(2); myChart2.hide(3); myChart2.hide(4);
+        myChart2.show(dataset.value);
+      }
+      if (dataset.value == 2) {
+        myChart2.config.options.parsing.xAxisKey = '5'; myChart2.config.options.parsing.yAxisKey = '6';
+        myChart2.hide(0); myChart2.hide(1); myChart2.hide(3); myChart2.hide(4);
+        myChart2.show(dataset.value);
+      }
+      if (dataset.value == 3) {
+        myChart2.config.options.parsing.xAxisKey = '7'; myChart2.config.options.parsing.yAxisKey = '8';
+        myChart2.hide(0); myChart2.hide(1); myChart2.hide(2); myChart2.hide(4);
+        myChart2.show(dataset.value);
+      }
+      if (dataset.value == 4) {
+        myChart2.config.options.parsing.xAxisKey = '9'; myChart2.config.options.parsing.yAxisKey = '10';
+        myChart2.hide(0); myChart2.hide(1); myChart2.hide(2); myChart2.hide(3);
+        myChart2.show(dataset.value);
+      }
+    }
+  }
+
+  //Third chart
+  const ctx3 = document.getElementById('myChart3').getContext('2d');
+  const myChart3 = new Chart(ctx3, {
+    type: 'pie',
+    data: {
+      labels: {{sex|safe}},
+      datasets: [{
+        data: {{a|safe}},                           
+        backgroundColor: [
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 26, 104, 0.2)',
+        ],
+        borderColor: [
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 26, 104, 1)',
+        ],
+        borderWidth: 1,
+        }]
+    },
+    options:{
+        layout: {
+          padding: 10
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                  size: 18
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: '性別',
+            color: 'rgba(145, 84, 9, 0.629)',
+            font: {
+              size: 25,
+            },
+          },
+          tooltip: {
+            enable: false
+          },
+          datalabels: {  
+          align: 'center',
+          formatter: (value, context) => {    
+            console.log(value);console.log(context);
+            console.log(context.chart.config.data.datasets[0].data); 
+            const datapoints = context.chart.config.data.datasets[0].data;
+            function totalSum(accumulator, currentValue) {
+
+              return accumulator + currentValue;
+            }                                          
+            const totalvalue = datapoints.reduce(totalSum,0);
+            const percentageValue = (value / totalvalue * 100).toFixed(1);
+            const display = [`${datapoints}`,`${percentageValue}%`] 
+            return `${percentageValue}%`;    
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+  });
+
+  //Forth chart
+  const ctx4 = document.getElementById('myChart4').getContext('2d');
+  const myChart4 = new Chart(ctx4, {
+    type: 'pie',
+    data: {
+      labels: {{is_domestic|safe}},
+      datasets: [{
+        data: {{b|safe}},                    
+        backgroundColor: [
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 26, 104, 0.2)',
+        ],
+        borderColor: [
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 26, 104, 1)',
+        ],
+        borderWidth: 1,
+      }]
+    },
+    options:{
+      layout: {
+          padding: 10
+        },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+                size: 18
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: '國籍',
+          color: 'rgba(145, 84, 9, 0.629)',
+          font: {
+            size: 25,
+          },
+        },
+        tooltip: {
+          enable: false
+        },
+        datalabels: {  
+        align: 'center',
+        formatter: (value, context) => {    
+          const datapoints = context.chart.config.data.datasets[0].data;
+          function totalSum(accumulator, currentValue) {
+
+            return accumulator + currentValue;
+          }                                          
+          const totalvalue = datapoints.reduce(totalSum,0);
+          const percentageValue = (value / totalvalue * 100).toFixed(1);
+          const display = [`${datapoints}`,`${percentageValue}%`] 
+          return `${percentageValue}%`;    
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  //fifth chart
+  const ctx5 = document.getElementById('myChart5').getContext('2d');
+  const myChart5 = new Chart(ctx5, {
+    type: 'bar',
+    data: {
+        labels: ['Mon'],
+        datasets: []
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true,
+          display: false,
+        },
+        y: {
+          stacked: true,
+          display: false,
+        }
+      },
+      plugins: {
+        stacked100: {
+          enable: true,
+          replaceTooltipLabel: false,
+        },
+        datalabels: {
+          formatter: (_value, context) => {
+          const data = context.chart.data;
+          const { datasetIndex, dataIndex } = context;
+          //console.log(context.chart.data)
+          //console.log(data.calculatedData[datasetIndex][dataIndex])
+          return `${data.datasets[datasetIndex]['label']}  ${data.calculatedData[datasetIndex][dataIndex]}% `;
+          },
+        },
+        title: {
+            display: true,
+            text: '年齡',
+            color: 'rgba(145, 84, 9, 0.629)',
+            font: {
+              size: 25,
+            },
+          },
+        legend: {
+          display: false
+        },  
+        }
+      },
+    plugins: [ChartDataLabels]
+  });
+  //可以使用forloop
+  const age = {{age|safe}}
+  const c = {{c|safe}}
+  const bgColor =  ['rgba(255, 26, 104, 0.5)','rgba(54, 162, 235, 0.5)','rgba(255, 206, 86, 0.5)','rgba(75, 192, 192, 0.5)','rgba(153, 102, 255, 0.5)','rgba(92, 242, 43, 0.5)','rgba(0, 0, 0, 0.2)','rgba(145, 84, 9, 0.3)']
+  for (i=0;i<age.length;i++) {
+    const a = {label: [age[i]], data: [c[i]], backgroundColor: bgColor[i]}
+    myChart5.data.datasets.push(a)
+    myChart5.update();
+  }
+
+  //6 chart
+  const ctx6 = document.getElementById('myChart6').getContext('2d');
+  const myChart6 = new Chart(ctx6, {
+    type: 'pie',
+    data: {
+      labels: {{vax|safe}},
+      datasets: [{
+        data: {{d|safe}},                         
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+        ],
+        borderWidth: 1,
+        }]
+      },
+      options:{
+      layout: {
+          padding: 10
+        },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+                size: 18
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: '有無疫苗接種',
+          color: 'rgba(145, 84, 9, 0.629)',
+          font: {
+            size: 25,
+          },
+        },
+        tooltip: {
+          enable: false
+        },
+        datalabels: {  
+        align: 'center',
+        formatter: (value, context) => {    
+          const datapoints = context.chart.config.data.datasets[0].data;
+          function totalSum(accumulator, currentValue) {
+
+            return accumulator + currentValue;
+          }                                          
+          const totalvalue = datapoints.reduce(totalSum,0);
+          const percentageValue = (value / totalvalue * 100).toFixed(1);
+          const display = [`${datapoints}`,`${percentageValue}%`] 
+          return `${percentageValue}%`;    
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  //7 chart
+  const ctx7 = document.getElementById('myChart7').getContext('2d');
+  const myChart7 = new Chart(ctx7, {
+    type: 'pie',
+    data: {
+      labels: {{symptom|safe}},
+      datasets: [{
+        data: {{e|safe}},                       
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+        ],
+        borderWidth: 1,
+        }]
+      },
+      options:{
+      layout: {
+          padding: 10
+        },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+                size: 18
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: '有無症狀',
+          color: 'rgba(145, 84, 9, 0.629)',
+          font: {
+            size: 25
+          },
+        },
+        tooltip: {
+          enable: false
+        },
+        datalabels: {  
+        align: 'center',
+        formatter: (value, context) => {    
+          const datapoints = context.chart.config.data.datasets[0].data;
+          function totalSum(accumulator, currentValue) {
+
+            return accumulator + currentValue;
+          }                                          
+          const totalvalue = datapoints.reduce(totalSum,0);
+          const percentageValue = (value / totalvalue * 100).toFixed(1);
+          const display = [`${datapoints}`,`${percentageValue}%`] 
+          return `${percentageValue}%`;    
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  //8 chart
+  const ctx8 = document.getElementById('myChart8').getContext('2d');
+  const myChart8 = new Chart(ctx8, {
+    type: 'pie',
+    data: {
+      labels: {{infect|safe}},
+      datasets: [{
+        data: {{f|safe}},                        
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+        ],
+        borderWidth: 1,
+        }]
+      },
+      options:{
+      layout: {
+          padding: 10
+        },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+                size: 18
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: '是否為突破性感染',
+          color: 'rgba(145, 84, 9, 0.629)',
+          font: {
+            size: 25
+          },
+        },
+        tooltip: {
+          enable: false
+        },
+        datalabels: {  
+        align: 'center',
+        formatter: (value, context) => {    
+          const datapoints = context.chart.config.data.datasets[0].data;
+          function totalSum(accumulator, currentValue) {
+
+            return accumulator + currentValue;
+          }                                          
+          const totalvalue = datapoints.reduce(totalSum,0);
+          const percentageValue = (value / totalvalue * 100).toFixed(1);
+          const display = [`${datapoints}`,`${percentageValue}%`] 
+          return `${percentageValue}%`;    
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+  
+  //9 chart
+  const ctx9 = document.getElementById('myChart9').getContext('2d');
+  const myChart9 = new Chart(ctx9, {
+    type: 'pie',
+    data: {
+      labels: {{sex|safe}},
+      datasets: [{
+        data: {{death_a|safe}},           
+        backgroundColor: [
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 26, 104, 0.2)',
+        ],
+        borderColor: [
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 26, 104, 1)',
+        ],
+        borderWidth: 1,
+        }]
+    },
+    options:{
+        layout: {
+          padding: 10
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                  size: 18
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: '性別',
+            color: 'rgba(145, 84, 9, 0.629)',
+            font: {
+              size: 25,
+            },
+          },
+          tooltip: {
+            enable: false
+          },
+          datalabels: {  
+          align: 'center',
+          formatter: (value, context) => {    
+            console.log(value);console.log(context);
+            console.log(context.chart.config.data.datasets[0].data); 
+            const datapoints = context.chart.config.data.datasets[0].data;
+            function totalSum(accumulator, currentValue) {
+
+              return accumulator + currentValue;
+            }                                          
+            const totalvalue = datapoints.reduce(totalSum,0);
+            const percentageValue = (value / totalvalue * 100).toFixed(1);
+            const display = [`${datapoints}`,`${percentageValue}%`] 
+            return `${percentageValue}%`;    
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+  });
+
+  //10 chart
+  const ctx10 = document.getElementById('myChart10').getContext('2d');
+  const myChart10 = new Chart(ctx10, {
+    type: 'pie',
+    data: {
+      labels: {{history|safe}},
+      datasets: [{
+        data: {{death_b|safe}},                        
+        backgroundColor: [
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 26, 104, 0.2)',
+        ],
+        borderColor: [
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 26, 104, 1)',
+        ],
+        borderWidth: 1,
+        }]
+    },
+    options:{
+        layout: {
+          padding: 10
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                  size: 18
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: '有無慢性病史',
+            color: 'rgba(145, 84, 9, 0.629)',
+            font: {
+              size: 25,
+            },
+          },
+          tooltip: {
+            enable: false
+          },
+          datalabels: {  
+          align: 'center',
+          formatter: (value, context) => {    
+            console.log(value);console.log(context);
+            console.log(context.chart.config.data.datasets[0].data); 
+            const datapoints = context.chart.config.data.datasets[0].data;
+            function totalSum(accumulator, currentValue) {
+
+              return accumulator + currentValue;
+            }                                          
+            const totalvalue = datapoints.reduce(totalSum,0);
+            const percentageValue = (value / totalvalue * 100).toFixed(1);
+            const display = [`${datapoints}`,`${percentageValue}%`] 
+            return `${percentageValue}%`;    
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+  });
+
+  //11 chart
+  const ctx11 = document.getElementById('myChart11').getContext('2d');
+  const myChart11 = new Chart(ctx11, {
+    type: 'bar',
+    data: {
+        labels: ['是否接種COVID19疫苗','年齡'],
+        datasets: []
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true,
+          ticks: {
+            color: 'rgba(145, 84, 9, 0.629)',
+            font: { 
+              size: 25, 
+              weight: 700 
+            } 
+          }
+        },
+        y: {
+          stacked: true,
+          ticks: {
+            callback: function(value, index, ticks) {
+                return '';  
+            }
+          }
+        }
+      },
+      plugins: {
+        stacked100: {
+          enable: true,
+          replaceTooltipLabel: false,
+        },
+        datalabels: {
+          formatter: (_value, context) => {
+          const data = context.chart.data;
+          const { datasetIndex, dataIndex } = context;
+
+          return `${data.datasets[datasetIndex]['label'][dataIndex]}  ${data.calculatedData[datasetIndex][dataIndex]}% `;
+          },
+        },
+        legend: {
+          display: false
+        },  
+        }
+      },
+    plugins: [ChartDataLabels]
+  });
+
+  const injection = {{injection|safe}}
+  const death_c = {{death_c|safe}}
+  const death_age = {{death_age|safe}}
+  const death_d = {{death_d|safe}}
+  for (i=0;i<injection.length;i++) {
+    const a = {label: [injection[i],death_age[i]], data: [death_c[i],death_d[i]], backgroundColor: bgColor[i]}
+    myChart11.data.datasets.push(a)
+    myChart11.update();
+  }
+
+
+</script>
+{% endblock scripts %}

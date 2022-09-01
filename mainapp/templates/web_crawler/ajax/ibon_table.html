@@ -1,0 +1,14 @@
+<table class="table">
+  <tr class="text-center">
+    {% for title in titles %}
+    <th>{{title}}</th>
+    {% endfor %}
+  </tr>
+  {% for data in datas %}
+  <tr class="text-center" id="td">
+    <td class="align-middle">{{data.0}}</td>
+    <td class="align-middle">{{data.1}}</td>
+    <td class="align-middle">{{data.2}}</td>
+  </tr>
+  {% endfor %}
+</table>

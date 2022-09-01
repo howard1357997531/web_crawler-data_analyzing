@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <table class="table table-warning table-borderless">
+            {% for std in std_scorelist %}
+            <tr>
+                <td>姓名 : {{std_name}}</td>
+                <td>國文 : {{std.0}}</td>
+                <td>英文 : {{std.1}}</td>
+                <td>數學 : {{std.2}}</td>
+                <td>社會 : {{std.3}}</td>
+                <td>自然 : {{std.4}}</td>
+                <td>平均 : {{std_avg}}</td>
+                <td>班排 : {{std_rank}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% if statue %}
+<canvas id="myChart"></canvas>  
+<script type="">    //這裡不能用const，因為用ajax做傳送資料，即使傳送了新的值，舊值還是會留在console(但不會顯示)
+    var ctx = document.getElementById('myChart').getContext('2d');  //所以這裡用const會與舊值const起衝突
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['國文', '英文', '數學', '社會', '自然'],
+            datasets: [{
+                label: '學生成績',
+                data: {{std_score|safe}},
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            },{
+                label: '全班各科平均',
+                data: {{avg_score|safe}},
+                backgroundColor: 'rgba(0, 255, 72, 0.705)',
+                borderColor: 'rgba(0, 255, 72, 0.705)',
+                pointRadius: 4,  
+                pointBackgroundColor: 'white',  
+                pointHoverRadius: 8,
+                pointHoverBorderWidth: 4,
+                hoverBackgroundColor: 'white',
+                borderWidth: 2,
+                order: 1, 
+                type: 'line'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    min: 0,
+                    max: 100,
+                }
+            },
+            plugins: {
+                datalabels: {
+                    align: 'top',
+                    formatter: (value, context) => {
+                        return `${value}分`;
+                    }
+                }
+            }    
+        },
+        plugins: [ChartDataLabels]
+    });
+</script>
+{% else %}
+<h3 class="text-center text-danger my-5">查無此人 ! !</h3>
+{% endif %}
+

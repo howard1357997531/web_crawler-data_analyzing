@@ -1,0 +1,27 @@
+{% if text %}
+    <p class="text-center fs-1 mt-5 text-success">{{text}} ! !</p>
+{% endif %}
+<table class="table">
+    <tr class="text-center">
+      {% for title in titles %}
+      <th>{{title}}</th>
+      {% endfor %}
+    </tr>
+    {% for data in datas %}
+    <tr class="text-center" id="td">
+      <td class="align-middle"><a href="https://www.railway.gov.tw{{data.0}}" target="_blank">{{data.1}}</a></td>
+      <td class="align-middle">{{data.2}}</td>
+      <td class="align-middle">{{data.3}}</td>
+      <td class="align-middle">{{data.4}}</td>
+      <td class="align-middle">{{data.5}}</td>
+      <td class="align-middle">{{data.6}}</td>
+      <td class="align-middle">{{data.7}}</td>
+      <td class="align-middle">{{data.8}}</td>
+      {% if data.9 %}
+      <td class="align-middle"><i class="fa fa-check"></i></td>
+      {% else %}
+      <td class="align-middle"></td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+</table>  

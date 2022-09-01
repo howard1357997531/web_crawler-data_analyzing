@@ -1,0 +1,131 @@
+{% extends 'layout/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}<title>Student_grade</title>{% endblock title %}
+{% block css %}
+<style>
+    .std_name input,select {
+        margin-left: 5px;
+        margin-bottom: 10px;
+        width: 230px;
+        text-align: center;
+    }
+    .std_name select {
+        padding: 10px;
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+<h2 class="text-center mt-3">學生成績系統</h2>
+<div class="container datacon">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+            <a href="{% url 'student_grade' %}" class="btn btn-info btn-sm me-2">資料庫</a>
+            <button class="btn btn-info btn-sm std_rank">排名</button>
+        <p class="float-end d-inline-block">總人數 : {{std_count}} 人 
+            <span class="text-primary mx-3">男生 : {{boy_count}} 位</span>
+            <span class="text-danger">女生 : {{girl_count}} 位</span>
+        </p>
+        </div>
+    </div>
+    
+    <div class="row std_data">
+        <div class="col-md-3 py-2 ps-3 border std_name" style="height: 500px;">
+            <h5 class="text-center py-1">新增資料</h5>
+            <form action="." method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button class="btn btn-primary btn-sm float-end mt-2" type="submit">送出</button>
+            </form>
+        </div>
+        <div class="col-md-9 overflow-auto" style="height: 500px;" id="std_table">
+            <table class="table table-hover text-center">
+                <tr class="table-active">
+                    <th style="width: 10%;">姓名</th>
+                    <th style="width: 15%;">學號</th>
+                    <th>性別</th>
+                    <th>國文</th>
+                    <th>英文</th>
+                    <th>數學</th>
+                    <th>社會</th>
+                    <th>自然</th>
+                    <th class="text-primary">總分</th>
+                    <th class="text-danger">平均</th>
+                    <th style="width: 7%";></th>
+                    <th style="width: 7%"></th>
+                </tr>
+                {% for std in std_datas %}
+                <tr>
+                    <td>{{std.name}}</td>
+                    <td>{{std.code}}</td>
+                    <td>{{std.sex}}</td>
+                    <td class="{% if std.chinese < 60 %}text-danger fw-bold{% endif %}">{{std.chinese}}</td>
+                    <td class="{% if std.english < 60 %}text-danger fw-bold{% endif %}">{{std.english}}</td>
+                    <td class="{% if std.math < 60 %}text-danger fw-bold{% endif %}">{{std.math}}</td>
+                    <td class="{% if std.society < 60 %}text-danger fw-bold{% endif %}">{{std.society}}</td>
+                    <td class="{% if std.science < 60 %}text-danger fw-bold{% endif %}">{{std.science}}</td>
+                    <td class="text-primary">{{std.total_score}}</td>
+                    <td class="text-danger">{{std.average_score}}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-warning editbtn" data-id='{{std.id}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop{{forloop.counter}}">
+                            修改
+                        </button>
+                        <div class="modal fade" id="staticBackdrop{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="POST" action="{% url 'save_grade' std.id %}" class="std_edit">
+                                        {% csrf_token %}  
+                                        <div class="form-content">
+                                            
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'delete_grade' std.id %}" class="std_delete" data-name="{{std.name}}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger" data-id='{{std.id}}'>刪除</button>
+                        </form>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <h2 class="text-center mt-5">學生成績分析</h2>
+    <div class="text-center my-3">
+        請輸入學生姓名: <input type="text" id="std_name" > 
+        <button class="btn btn-info btn-sm ms-3 std_btn" >送出</button>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-10 mx-auto std_chart" style="display:inline-block;"></div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('.numberinput ').attr('max','100');
+        $('.numberinput ').attr('min','0');
+        $('.form-group').children('div').css('display','inline-block');
+        $('#id_sex').removeClass('form-control')
+        $('#id_sex').addClass('form-select-sm')
+        $('#id_sex').attr('aria-label','.form-select-sm example')
+    });
+    let label = document.getElementsByTagName('label')
+    label[0].innerHTML = '姓名 :';
+    label[1].innerHTML = '學號 :';
+    label[2].innerHTML = '性別 :';
+    label[3].innerHTML = '國文 :';
+    label[4].innerHTML = '英文 :';
+    label[5].innerHTML = '數學 :';
+    label[6].innerHTML = '自然 :';
+    label[7].innerHTML = '社會 :';
+</script>
+{% endblock scripts %}

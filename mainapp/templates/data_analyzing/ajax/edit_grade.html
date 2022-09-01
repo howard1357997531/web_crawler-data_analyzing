@@ -1,0 +1,27 @@
+{% load crispy_forms_tags %}
+<style>
+    h3 { margin-left: 175px;}
+    .table-borderless input,.table-borderless select {
+        margin-left: 5px;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<div class="modal-header text-center">
+    <h3 class="modal-title text-success" id="staticBackdropLabel">資料修改</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body" style="text-align: left;">
+    <table class="table table-borderless w-75 mx-auto">
+        {{form.as_table}}
+    </table>
+        
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+    <button type="submit" class="btn btn-primary">送出</button>
+</div>
+
+
+

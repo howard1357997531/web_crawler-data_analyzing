@@ -1,0 +1,27 @@
+{% extends 'layout/base.html' %}
+{% block title %}<title>Nba_data</title>{% endblock title %}
+{% block css %}
+<style>
+  td:nth-child(1) {width: 40%;}
+
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+          <div class="text-center">
+            <h1>查找NBA網站</h1>
+            <p>網址 : <a href="https://tw.global.nba.com/scores/" target="_blank">https://tw.global.nba.com/scores/</a></p>
+          </div>
+          <div class="text-center">
+            查詢日期 : 
+            <input type="date" id="date">
+            <a class="btn btn-info btn-sm ms-3" id="nbaBtn">送出</a>
+          </div>
+          <div id="nbadata">
+          </div>
+    </div>
+</div>
+{% endblock content %}
