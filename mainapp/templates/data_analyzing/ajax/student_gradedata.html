@@ -18,8 +18,8 @@
 </div>
 {% if statue %}
 <canvas id="myChart"></canvas>  
-<script type="">    //這裡不能用const，因為用ajax做傳送資料，即使傳送了新的值，舊值還是會留在console(但不會顯示)
-    var ctx = document.getElementById('myChart').getContext('2d');  //所以這裡用const會與舊值const起衝突
+<script type="">    
+    var ctx = document.getElementById('myChart').getContext('2d');  
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
