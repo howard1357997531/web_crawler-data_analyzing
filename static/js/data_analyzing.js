@@ -65,8 +65,8 @@ $(document).ready(function () {
                 console.log(res.bool)
                 if (res.bool == true) {
                     $('.modal').modal('hide');
-                    //$('.datacon').load(location.href + ' .datacon');  //如果html有地方用js改過，
-                    location.reload();                                  //局部reload不會reload js
+                    $('.datacon').load(location.href + ' .datacon');  //如果html有地方用js改過，
+                    //location.reload();                                  //局部reload不會reload js
                 }
                 
             }
@@ -99,8 +99,8 @@ $(document).ready(function () {
                             swal("資料已刪除 ~", {
                                 icon: "success",
                               });
-                            //$('.datacon').load(location.href + ' .datacon');
-                            location.reload();
+                            $('.datacon').load(location.href + ' .datacon');
+                            //location.reload();
                         }
                         
                     }
