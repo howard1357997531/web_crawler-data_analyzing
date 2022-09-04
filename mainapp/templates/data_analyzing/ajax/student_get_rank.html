@@ -15,19 +15,19 @@
     </tr>
     {% for std in std_datas %}
     <tr>
-        <td class="{% if forloop.counter <= 3 %}text-warning{% endif %}">
-            {{forloop.counter}}
+        <td class="{% if forloop.counter <= 3 %}text-warning fw-bold{% endif %}">
+            {{std.0}}
         </td>
-        <td>{{std.0}}</td>
         <td>{{std.1}}</td>
         <td>{{std.2}}</td>
-        <td class="{% if std.3 < 60 %}text-danger fw-bold{% endif %}">{{std.3}}</td>
-        <td class="{% if std.4 < 60 %}text-danger fw-bold{% endif %}">{{std.4}}</td>
-        <td class="{% if std.5 < 60 %}text-danger fw-bold{% endif %}">{{std.5}}</td>
-        <td class="{% if std.6 < 60 %}text-danger fw-bold{% endif %}">{{std.6}}</td>
-        <td class="{% if std.7 < 60 %}text-danger fw-bold{% endif %}">{{std.7}}</td>
-        <td class="text-primary">{{std.8}}</td>
-        <td class="text-danger">{{std.9}}</td>
+        <td>{{std.3}}</td>
+        <td class="{% if std.3 < 60 %}text-danger fw-bold{% endif %}">{{std.4}}</td>
+        <td class="{% if std.4 < 60 %}text-danger fw-bold{% endif %}">{{std.5}}</td>
+        <td class="{% if std.5 < 60 %}text-danger fw-bold{% endif %}">{{std.6}}</td>
+        <td class="{% if std.6 < 60 %}text-danger fw-bold{% endif %}">{{std.7}}</td>
+        <td class="{% if std.7 < 60 %}text-danger fw-bold{% endif %}">{{std.8}}</td>
+        <td class="text-primary">{{std.9}}</td>
+        <td class="text-danger">{{std.10}}</td>
     </tr>
     {% endfor %}
 </table>

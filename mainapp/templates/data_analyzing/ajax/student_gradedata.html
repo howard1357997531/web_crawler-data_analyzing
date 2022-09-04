@@ -1,14 +1,18 @@
+{% if statue %}
 <div class="row">
-    <div class="col-md-10 mx-auto">
-        <table class="table table-warning table-borderless">
+    <div class="col-md-10 mx-auto text-center">
+        <h2 class="mb-2">學生 <span class="mx-3 fs-1">{{std_name}}</span> 成績分析</h2>
+        <span class="d-inline-flex my-3 px-4 py-2 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
+            各科成績與全班各科平均比較
+        </span>
+        <table class="table">
             {% for std in std_scorelist %}
-            <tr>
-                <td>姓名 : {{std_name}}</td>
-                <td>國文 : {{std.0}}</td>
-                <td>英文 : {{std.1}}</td>
-                <td>數學 : {{std.2}}</td>
-                <td>社會 : {{std.3}}</td>
-                <td>自然 : {{std.4}}</td>
+            <tr class="text-secondary fs-6">
+                <td>國文 : {{std.0}} 分</td>
+                <td>英文 : {{std.1}} 分</td>
+                <td>數學 : {{std.2}} 分</td>
+                <td>社會 : {{std.3}} 分</td>
+                <td>自然 : {{std.4}} 分</td>
                 <td>平均 : {{std_avg}}</td>
                 <td>班排 : {{std_rank}}</td>
             </tr>
@@ -16,10 +20,30 @@
         </table>
     </div>
 </div>
-{% if statue %}
-<canvas id="myChart"></canvas>  
-<script type="">    
-    var ctx = document.getElementById('myChart').getContext('2d');  
+<canvas id="myChart" class="mb-4"></canvas> 
+<div class="row">
+    <div class="col-md-10 mx-auto text-center">
+        <span class="d-inline-flex my-3 px-4 py-2 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
+            各科班排
+        </span>
+        <table class="table">
+            {% for rank in score_rank_title %}
+            <tr class="text-secondary fs-6">
+                <td>國文 : {{rank.0}} 名</td>
+                <td>英文 : {{rank.1}} 名</td>
+                <td>數學 : {{rank.2}} 名</td>
+                <td>社會 : {{rank.3}} 名</td>
+                <td>自然 : {{rank.4}} 名</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<canvas id="myChart2" class="mb-4"></canvas> 
+<hr>
+<script type="">    //這裡不能用const，因為用ajax做傳送資料，即使傳送了新的值，舊值還是會留在console(但不會顯示)
+    Chart.register(ChartjsPluginStacked100.default);
+    var ctx = document.getElementById('myChart').getContext('2d');  //所以這裡用const會與舊值const起衝突
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -33,7 +57,6 @@
                     'rgba(255, 206, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
                     'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
                 ],
                 borderColor: [
                     'rgba(54, 162, 235, 1)',
@@ -41,7 +64,6 @@
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
                     'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
             },{
@@ -74,6 +96,84 @@
                     }
                 }
             }    
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    //2
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var myChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['國文', '英文', '數學', '社會', '自然'],
+            datasets: [{
+                axis: 'y', 
+                label: '前幾%',
+                data: {{score_rank|safe}},
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 1
+                },{
+                axis: 'y', 
+                label: '後幾%',
+                data: {{score_rank2|safe}},
+                backgroundColor: 'rgba(240, 248, 255, 0.4)',
+                borderWidth: 1
+                },
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: {
+                stacked: true,
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, ticks) {
+                        //console.log(index);
+                        if (index == 0) {
+                            return '0';
+                        }
+                        if (index == 10) {
+                            return '100';
+                        }
+                        return `前${value}%`;  //可以自訂刻度值 //'$' + value
+                    }
+                }
+                },
+                y: {
+                stacked: true,
+                }
+            },
+            plugins: {
+                stacked100: {
+                    enable: true,
+                    replaceTooltipLabel: false,
+                },
+                datalabels: {
+                    formatter: (value, context) => {
+                    if (context.datasetIndex == 1) {
+                        return '';
+                    }
+                    return `${context.chart.config.data.calculatedData[context.datasetIndex][context.dataIndex]}% `;
+                    },
+                },
+                legend: {
+                    display: false
+                },       
+            }
         },
         plugins: [ChartDataLabels]
     });

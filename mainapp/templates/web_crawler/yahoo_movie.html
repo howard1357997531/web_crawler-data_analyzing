@@ -37,7 +37,7 @@
               <td class="align-middle">無預告片</td>
               {% endif %}
               <td class="align-middle">{{i.8}}</td>
-              <td class="align-middle">                                     
+              <td class="align-middle">                                      <!-- 需要設定不同id，不然再forloop裡，modal會一直對到同一個id的modal，會導致內容都跟地一個相同-->
                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">
                   瀏覽
                 </button>

@@ -1,5 +1,4 @@
 {% extends 'layout/base.html' %}
-{% load crispy_forms_tags %}
 {% block title %}<title>Student_grade</title>{% endblock title %}
 {% block css %}
 <style>
@@ -12,11 +11,13 @@
     .std_name select {
         padding: 5px;
     }
+    h2 {color: darkslateblue;}
+    h2 span {color: blueviolet;}
 </style>
 {% endblock css %}
 
 {% block content %}
-<h2 class="text-center mt-4">學生成績系統</h2>
+<h2 class="text-center mt-3">學生成績系統</h2>
 <div class="container">
     <div class="row std_data datacon">
         <div class="col-md-3 pt-2 ps-4 border border-secondary std_name" style="height: 540px;">
@@ -70,7 +71,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <form method="POST" action="{% url 'save_grade' std.id %}" class="std_edit">
-                                            {% csrf_token %}  
+                                            {% csrf_token %}  <!-- csrf 寫在modal裡會抓不到(不知為何) -->
                                             <div class="form-content">                                     
                                             </div>
                                         </form>
@@ -89,15 +90,124 @@
                 </table>
             </div>
         </div>
+    </div>  
+    
+    <div class="text-end mb-3">
+        <h6 class="text-secondary mt-4 me-3 d-inline-block">學生成績分析:</h6>
+        <input type="text" id="std_name" placeholder="請輸入學生姓名:"> 
+        <button class="btn btn-secondary btn-sm ms-3 std_btn" >送出</button>
     </div>
-    <h2 class="text-center mt-5">學生成績分析</h2>
-    <div class="text-center my-3">
-        請輸入學生姓名: <input type="text" id="std_name" > 
-        <button class="btn btn-info btn-sm ms-3 std_btn" >送出</button>
+    <div class="row">
+        <div class="col-md-10 mx-auto std_chart" style="display:inline-block;"></div>
     </div>
     <div class="row mb-5">
-        <div class="col-md-10 mx-auto std_chart" style="display:inline-block;"></div>
+        <div class="col-md-10 mx-auto" style="display:inline-block;">
+            <canvas id="myChart3" class="mb-3"></canvas>  
+            <canvas id="myChart4"></canvas>
+        </div>
     </div>
 </div>
 {% endblock content %}
 
+{% block scripts %}
+
+<script type="">
+    Chart.register(ChartjsPluginStacked100.default);
+    const ctx3 = document.getElementById('myChart3').getContext('2d');
+  const myChart3 = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+        labels: ['國文', '英文', '數學', '社會', '自然'],
+        datasets: [
+        {label: ['及格','及格','及格','及格','及格'], data: {{score_pass|safe}}, backgroundColor: 'rgba(153, 102, 255, 0.5)', borderWidth: 1},
+        {label: ['不及格','不及格','不及格','不及格','不及格'], data: {{score_fail|safe}}, backgroundColor: 'rgba(255, 26, 104, 0.5)',borderWidth: 1},
+        ]
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+          ticks: {
+              // Include a dollar sign in the ticks
+              callback: function(value, index, ticks) {
+                  return '';  //可以自訂刻度值 //'$' + value
+              }
+          }
+        }
+      },
+      plugins: {
+        stacked100: {
+          enable: true,
+          replaceTooltipLabel: false,
+        },
+        datalabels: {
+          formatter: (_value, context) => {
+          const data = context.chart.data;             //datasetIndex: dataset 的 index 從0開始 loop
+          const { datasetIndex, dataIndex } = context; //dataIndex: data 的 index 從0開始 loop
+          console.log(context.chart.data)
+          return `${data.datasets[datasetIndex]['label'][dataIndex]}  ${data.calculatedData[datasetIndex][dataIndex]}% `;
+          },
+        },
+        title: {
+            display: true,
+            text: '全班各科及格率',
+            color: 'rgba(145, 84, 9, 0.629)',
+            font: {
+              size: 30,
+            },
+          },
+        legend: {
+          display: false
+        },  
+        }
+      },
+    plugins: [ChartDataLabels]
+});
+
+    //chart2
+    const ctx4 = document.getElementById('myChart4').getContext('2d');
+    const myChart4 = new Chart(ctx4, {
+      type: 'bar',
+      data: {
+          labels: ['國文', '英文', '數學', '社會', '自然'],
+          datasets: [{
+              label: '男生',
+              data: {{boyavg|safe}},
+              backgroundColor: 'rgba(153, 102, 255, 0.5)',              
+              borderWidth: 1
+          },{
+              label: '女生',
+              data: {{girlavg|safe}},
+              backgroundColor: 'rgba(255, 26, 104, 0.5)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins: {
+            datalabels:{
+                formatter: (value, context) => {
+                    return `${value} 分`
+                  }
+              },
+            title: {
+                display: true,
+                text: '男女各科平均比較',
+                color: 'rgba(145, 84, 9, 0.629)',
+                font: {
+                size: 30,
+            },
+          },
+          }
+      },
+      plugins : [ChartDataLabels]
+  });
+    </script>
+{% endblock scripts %}

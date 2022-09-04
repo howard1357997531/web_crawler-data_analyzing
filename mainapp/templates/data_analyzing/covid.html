@@ -100,6 +100,7 @@
               <a href="https://covid-19.nchc.org.tw/api.php?tableID=4002" target="_blank">"https://covid-19.nchc.org.tw/api.php?tableID=4002"</a>
             </p>
           </div>
+          {{data7}}
           <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-5">
@@ -119,10 +120,6 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js" integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-stacked100@1.0.0"></script>
-
 <script type="">
    Chart.register(ChartjsPluginStacked100.default);
   //First chart
@@ -132,7 +129,7 @@
     data: {
         datasets: [{
           label: '台灣COVID-19每日新增確診 (自 2022/1/1 起)',
-          data: {{datas|safe}},                          
+          data: {{datas|safe}},                      //django傳變數給js要加safe,不然會error   
           backgroundColor: 'rgba(132, 0, 255, 0.29)',
           borderColor: 'rgba(132, 0, 255, 0.59)',
           borderWidth: 1,
@@ -213,8 +210,8 @@
   });
   
   function updateChart(dataset) {
-    console.log(dataset.value); 
-    const isDataShown = myChart2.isDatasetVisible(dataset.value);  
+    //console.log(dataset.value); //回傳按到value
+    const isDataShown = myChart2.isDatasetVisible(dataset.value);  //檢查此資料的圖形是否顯示
     console.log(isDataShown);
     if (isDataShown === false) {
       if (dataset.value == 0) {
