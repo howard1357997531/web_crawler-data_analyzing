@@ -13,6 +13,8 @@
     }
     h2 {color: darkslateblue;}
     h2 span {color: blueviolet;}
+    .total_color {color:rgb(33, 102, 166);}
+    .avg_color {color:rgb(166, 33, 166);}
 </style>
 {% endblock css %}
 
@@ -32,7 +34,7 @@
             <a href="{% url 'student_grade' %}" class="btn btn-info btn-sm me-2">資料庫</a>
             <button class="btn btn-info btn-sm std_rank">排名</button>
             <p class="float-end d-inline-block">總人數 : {{std_count}} 人 
-                <span class="text-primary mx-3">男生 : {{boy_count}} 位</span>
+                <span class="mx-3"  style="color:rgb(33, 102, 166);">男生 : {{boy_count}} 位</span>
                 <span class="text-danger">女生 : {{girl_count}} 位</span>
             </p>
             <div class="overflow-auto w-100" id="std_table" style="height: 500px;">
@@ -46,8 +48,8 @@
                         <th>數學</th>
                         <th>社會</th>
                         <th>自然</th>
-                        <th class="text-primary">總分</th>
-                        <th class="text-danger">平均</th>
+                        <th class="total_color">總分</th>
+                        <th class="avg_color">平均</th>
                         <th style="width: 7%";></th>
                         <th style="width: 7%"></th>
                     </tr>
@@ -56,13 +58,13 @@
                         <td>{{std.name}}</td>
                         <td>{{std.code}}</td>
                         <td>{{std.sex}}</td>
-                        <td class="{% if std.chinese < 60 %}text-danger fw-bold{% endif %}">{{std.chinese}}</td>
-                        <td class="{% if std.english < 60 %}text-danger fw-bold{% endif %}">{{std.english}}</td>
-                        <td class="{% if std.math < 60 %}text-danger fw-bold{% endif %}">{{std.math}}</td>
-                        <td class="{% if std.society < 60 %}text-danger fw-bold{% endif %}">{{std.society}}</td>
-                        <td class="{% if std.science < 60 %}text-danger fw-bold{% endif %}">{{std.science}}</td>
-                        <td class="text-primary">{{std.total_score}}</td>
-                        <td class="text-danger">{{std.average_score}}</td>
+                        <td class="{% if std.chinese < 60 %}text-danger fw-bolder{% endif %}">{{std.chinese}}</td>
+                        <td class="{% if std.english < 60 %}text-danger fw-bolder{% endif %}">{{std.english}}</td>
+                        <td class="{% if std.math < 60 %}text-danger fw-bolder{% endif %}">{{std.math}}</td>
+                        <td class="{% if std.society < 60 %}text-danger fw-bolder{% endif %}">{{std.society}}</td>
+                        <td class="{% if std.science < 60 %}text-danger fw-bolder{% endif %}">{{std.science}}</td>
+                        <td class="total_color fw-bolder">{{std.total_score}}</td>
+                        <td class="avg_color fw-bolder">{{std.average_score}}</td>
                         <td>
                             <button type="button" class="btn btn-sm btn-warning editbtn" data-id='{{std.id}}' data-bs-toggle="modal" data-bs-target="#staticBackdrop{{forloop.counter}}">
                                 修改

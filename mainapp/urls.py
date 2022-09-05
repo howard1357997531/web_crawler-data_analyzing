@@ -10,7 +10,8 @@ urlpatterns = [
     path('ibon/', views.ibon, name='ibon'),
     path('get_city/', views.get_city, name='get_city'),
     path('taiwan_railway/', views.taiwan_railway, name='taiwan_railway'),
-    path('get_taiwan_railway_data/', views.get_taiwan_railway_data, name='get_taiwan_railway_data'),
+    path('get_taiwan_railway_data/', views.get_taiwan_railway_data,
+         name='get_taiwan_railway_data'),
     path('nba_data/', views.nba_data, name='nba_data'),
     path('get_nba_data/', views.get_nba_data, name='get_nba_data'),
 
@@ -21,7 +22,8 @@ urlpatterns = [
     path('get_rank/', data_analyzing_views.get_rank, name='get_rank'),
     path('edit_grade/', data_analyzing_views.edit_grade, name='edit_grade'),
     path('save_grade/<int:pk>/', data_analyzing_views.save_grade, name='save_grade'),
-    path('delete_grade/<int:pk>/', data_analyzing_views.delete_grade, name='delete_grade'),
-    
+    path('delete_grade/<int:pk>/',
+         data_analyzing_views.delete_grade, name='delete_grade'),
+
 
 ]

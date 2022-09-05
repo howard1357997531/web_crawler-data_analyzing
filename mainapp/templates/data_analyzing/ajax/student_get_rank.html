@@ -10,8 +10,8 @@
         <th>數學</th>
         <th>社會</th>
         <th>自然</th>
-        <th class="text-primary">總分</th>
-        <th class="text-danger">平均</th>
+        <th class="total_color">總分</th>
+        <th class="avg_color">平均</th>
     </tr>
     {% for std in std_datas %}
     <tr>
@@ -21,13 +21,13 @@
         <td>{{std.1}}</td>
         <td>{{std.2}}</td>
         <td>{{std.3}}</td>
-        <td class="{% if std.3 < 60 %}text-danger fw-bold{% endif %}">{{std.4}}</td>
-        <td class="{% if std.4 < 60 %}text-danger fw-bold{% endif %}">{{std.5}}</td>
-        <td class="{% if std.5 < 60 %}text-danger fw-bold{% endif %}">{{std.6}}</td>
-        <td class="{% if std.6 < 60 %}text-danger fw-bold{% endif %}">{{std.7}}</td>
-        <td class="{% if std.7 < 60 %}text-danger fw-bold{% endif %}">{{std.8}}</td>
-        <td class="text-primary">{{std.9}}</td>
-        <td class="text-danger">{{std.10}}</td>
+        <td class="{% if std.3 < 60 %}text-danger fw-bolder{% endif %}">{{std.4}}</td>
+        <td class="{% if std.4 < 60 %}text-danger fw-bolder{% endif %}">{{std.5}}</td>
+        <td class="{% if std.5 < 60 %}text-danger fw-bolder{% endif %}">{{std.6}}</td>
+        <td class="{% if std.6 < 60 %}text-danger fw-bolder{% endif %}">{{std.7}}</td>
+        <td class="{% if std.7 < 60 %}text-danger fw-bolder{% endif %}">{{std.8}}</td>
+        <td class="total_color fw-bolder">{{std.9}}</td>
+        <td class="avg_color fw-bolder">{{std.10}}</td>
     </tr>
     {% endfor %}
 </table>
