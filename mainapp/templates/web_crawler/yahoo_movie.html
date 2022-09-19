@@ -3,7 +3,8 @@
 {% block css %}
 <style>
   td:nth-child(3) {width: 50%; text-align: left;}
-  .color { color: #6610f2;}
+  .color { color: #6610f2; font-weight: 600;}
+  .color2 { color: rgb(173, 20, 190); font-weight: 600;}
 </style>
 {% endblock css %}
 
@@ -28,48 +29,59 @@
             {% for i in datas %}
             <tr class="text-center">
               <td class="align-middle color">{{i.0}}</td>
-              <td class="align-middle ">{{i.1}}</td>
-              <td class="align-middle"><a href="{{i.3}}" target="_blank" class="text-danger">{{i.2|truncatechars:40}}</a></td>
-              <td class="align-middle">{{i.6}}</td>
-              {% if i.7 %}
-              <td class="align-middle"><a href="{{i.7}}" target="_blank" class="text-secondary">預告片</a></td>
+              <td class="align-middle color2">{{i.1}}</td>
+
+              {% if i.3 or i.4 or i.5 %}
+                <td class="align-middle"><a href="{{i.3}}" target="_blank" class="text-danger">{{i.2|truncatechars:40}}</a></td>
               {% else %}
-              <td class="align-middle">無預告片</td>
+                <td class="align-middle"><a href="#" class="text-danger">{{i.2|truncatechars:40}}</a></td>
               {% endif %}
+              <td class="align-middle">{{i.6}}</td>
+
+              {% if i.7 %}
+                <td class="align-middle"><a href="{{i.7}}" target="_blank" class="text-secondary">預告片</a></td>
+              {% else %}
+                <td class="align-middle">無預告片</td>
+              {% endif %}
+
               <td class="align-middle">{{i.8}}</td>
-              <td class="align-middle">                                      <!-- 需要設定不同id，不然再forloop裡，modal會一直對到同一個id的modal，會導致內容都跟地一個相同-->
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">
-                  瀏覽
-                </button>
-                
-                <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title w-50 mx-auto" id="exampleModalLabel" >{{i.2|truncatechars:20}}</h4>
-                        <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <img src="{{i.4}}" alt="" width="90%" height="350">
-                          </div>
-                          <div class="col-md-6">
-                            {% for detail in i.5 %}
-                            <p style="text-align: left;">{{detail}}</p>
-                            {% endfor %}
-                          </div>
+
+              {% if i.5 %}
+                <td class="align-middle">                                      <!-- 需要設定不同id，不然再forloop裡，modal會一直對到同一個id的modal，會導致內容都跟地一個相同-->
+                  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">
+                    瀏覽
+                  </button>
+                  
+                  <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title w-50 mx-auto" id="exampleModalLabel" >{{i.2|truncatechars:20}}</h4>
+                          <button type="button" class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">關閉</button>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <img src="{{i.4}}" alt="" width="90%" height="350">
+                            </div>
+                            <div class="col-md-6">
+                              {% for detail in i.5 %}
+                              <p style="text-align: left;">{{detail}}</p>
+                              {% endfor %}
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">關閉</button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
-              </td>
+                </td>
+              {% else %}
+                <td class="align-middle"></td>
+              {% endif %}
             </tr>
             {% endfor %}
           </table>

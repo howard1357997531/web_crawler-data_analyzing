@@ -39,17 +39,25 @@ def yahoo_movie(request):
             if i == 1:
                 continue
             elif i == 3:
-                data.extend([td.text.strip(), td.find('a').get('href')])
-                soup2 = get_soup(td.find('a').get('href'))
-                movie_img = soup2.find('div', class_='table').find(
-                    'div', class_='movie_intro_foto')
-                movie_detail = soup2.find('div', class_='table').find(
-                    'div', class_='movie_intro_info_r')
-                data.append(movie_img.find('img').get('src'))
-                data.append([i.text.strip()
-                            for i in movie_detail.find_all('span')])
+                if td.find('a'):
+                    data.extend([td.text.strip(), td.find('a').get('href')])
+                    soup2 = get_soup(td.find('a').get('href'))
+                    movie_img = soup2.find('div', class_='table').find(
+                        'div', class_='movie_intro_foto')
+                    movie_detail = soup2.find('div', class_='table').find(
+                        'div', class_='movie_intro_info_r')
+                    data.append(movie_img.find('img').get('src'))
+                    data.append([i.text.strip()
+                                for i in movie_detail.find_all('span')])
+                else:
+                    title = td.find('div', class_='rank_txt').text.strip()
+                    data.extend([title, '', '', ''])
             elif i == 5:
-                data.append(td.find('a').get('href') if td.find('a') else None)
+                if td.find('a'):
+                    data.append(td.find('a').get('href')
+                                if td.find('a') else None)
+                else:
+                    data.append('')
             else:
                 data.append(td.text.strip())
         datas.append(data)
