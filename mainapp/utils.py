@@ -123,7 +123,7 @@ def get_death_data(num, e1=None, e2=None, e3=None, e4=None):
     return datas
 
 
-def get_score_rank(datas):
+def get_score_rank(datas):  # 各科分數排名
     subjects = ['chinese', 'english', 'math', 'society', 'science']
     for subject in subjects:
         datas.sort(key=lambda x: x.get(subject), reverse=True)

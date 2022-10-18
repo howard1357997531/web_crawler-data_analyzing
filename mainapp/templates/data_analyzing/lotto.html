@@ -1,0 +1,96 @@
+{% extends 'layout/base.html' %}
+{% block title %}<title>Lotto</title>{% endblock title %}
+{% block css %}
+<style>
+    
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 text-center mx-auto">
+            <h1 class="mt-4">樂透</h1>
+            <input type="number" class="form-control form-control-sm d-inline-block text-center" style="width: 10%;" id="times"
+                   min='1' placeholder="請輸入數字" value="1">
+            <button class="btn btn-success btn-sm" id="lottobtn">送出</button>
+            <table class="table table-bordered mt-3" id="lottoTable">
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    let times = document.querySelector('#times');
+    let lottoTable = document.getElementById('lottoTable');
+    let lottoBtn = document.querySelector('#lottobtn');
+    console.log(lottoBtn);
+    
+    lottoBtn.addEventListener('click',() => {
+        lottoTable.innerText = '';
+        let lottotimes = times.value;
+        if (lottotimes == 1) {
+            for (let i = 0; i < 15000; i++) {
+                setTimeout(() => {
+                    lottoTable.innerText = ''
+                    insertrow(0)
+                },100);
+            };
+            return 
+        };
+
+        for (let i =0; i < lottotimes; i++) {
+            insertrow(i);
+        };
+    });
+    
+    function insertrow(rowindex) {
+        let lotto = getLottoArray(1 , 50 , 6, true);
+        let tr = lottoTable.insertRow(rowindex);
+        for (let i = 0; i < lotto.length; i++) {
+            let lottonum = lotto[i] < 10 ? '0' + lotto[i] : lotto[i];
+            tr.insertCell(i).innerText = lottonum;
+        }
+    };
+
+    function getLottoArray(start, end, maxtime = 6, specialnum = true) {
+        let count  = 0;
+        let lottoArray = [];
+        while (true){
+            let num = getRandomNumber(start, end);
+            if (!lottoArray.includes(num)) {
+                lottoArray.push(num);
+                if (++count == maxtime) {
+                    break
+                }
+            }
+        };
+
+        lottoArray.sort((a,b) => (a - b));
+        
+        if (specialnum) {
+            lottoArray.push(getRandomNumber(start, end));
+        }
+
+        return lottoArray;      
+    };
+    //console.log(getLottoArray(1,50,6));
+
+    function getRandomNumber(start, end) {
+        return Math.floor(Math.random() * (end - start + 1) + start);
+    };
+
+    
+    
+    /*
+    uniqueCount = ["a","b","c","d","d","e","a","b","c","f","g","h","h","h","e","a"];
+    var count = {};
+    uniqueCount.forEach(function(i) { count[i] = (count[i]||0) + 1;});  //(count[i]||0) returns the value of counts[x] if it is set, otherwise 0.
+    console.log(count);
+    */
+</script>
+
+{% endblock scripts %}

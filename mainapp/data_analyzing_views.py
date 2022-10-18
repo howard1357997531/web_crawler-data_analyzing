@@ -1,3 +1,4 @@
+from concurrent.futures.process import _ThreadWakeup
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -148,6 +149,8 @@ def student_grade(request):
     # 全班各科及格率
     grades = list(Student.objects.values_list(
         'chinese', 'english', 'math', 'society', 'science'))
+    # print(grades)
+    # [(80, 70, 90, 90, 75), (58, 99, 48, 80, 69)....]
     chinese = len(list(filter(lambda x: x >= 60, [i[0] for i in grades])))
     english = len(list(filter(lambda x: x >= 60, [i[1] for i in grades])))
     math = len(list(filter(lambda x: x >= 60, [i[2] for i in grades])))
@@ -160,6 +163,8 @@ def student_grade(request):
     # 男女各科平均比較
     boyavg = Student.objects.filter(sex='男').aggregate(
         Avg('chinese'), Avg('english'), Avg('math'), Avg('society'), Avg('science'))
+    # print(boyavg)
+    #{'chinese__avg': 73.75, 'english__avg': 77.08, 'math__avg': 86.75, 'society__avg': 79.58, 'science__avg': 64.16}
     boyavg = [round(value, 1) for key, value in boyavg.items()]
     girlavg = Student.objects.filter(sex='女').aggregate(
         Avg('chinese'), Avg('english'), Avg('math'), Avg('society'), Avg('science'))
@@ -184,9 +189,13 @@ def get_grade(request):
     std_name = request.GET.get('std_name').strip()
     total = {i[0]: i[1]
              for i in list(Student.objects.values_list('name', 'total_score'))}
+    # print(total.items())
+    # dict_items([('阿喜', 405), ('阿賢', 354)...])
     total = [i[0]
              for i in sorted(total.items(), key=lambda x:x[1], reverse=True)]
     all_name = [i['name'] for i in list(Student.objects.values('name'))]
+    # print(Student.objects.values('name'))
+    # <QuerySet [{'name': '阿喜'}, {'name': '阿賢'}...]>
     try:
         if std_name in all_name:
             statue = True
@@ -202,7 +211,12 @@ def get_grade(request):
     # 各科班排
     std_allscore = Student.objects.values(
         'name', 'chinese', 'english', 'math', 'society', 'science')
+    # print(std_allscore)
+    # <QuerySet [{'name': '阿喜', 'chinese': 80, 'english': 70, 'math': 90, 'society': 90, 'science': 75},{}...]>
     std_allscore = get_score_rank(list(std_allscore))
+    # print(std_allscore)
+
+    # 取得輸入的學生各科排名資料
     for std in std_allscore:
         if std['name'] == std_name:
             score_rank = [value for i, value in enumerate(
@@ -210,7 +224,7 @@ def get_grade(request):
     num_of_std = Student.objects.count()
     score_rank2 = [num_of_std-i for i in score_rank]
     score_rank_title = [score_rank]
-    print(std_scorelist)
+
     t = render_to_string(
         'data_analyzing/ajax/student_gradedata.html', locals())
     return JsonResponse({'data': t})
@@ -220,7 +234,9 @@ def get_rank(request):
     std_datas = list(Student.objects.values_list('name', 'code', 'sex', 'chinese',
                                                  'english', 'math', 'society', 'science', 'total_score', 'average_score'))
     std_datas = sorted(std_datas, key=lambda x: x[8], reverse=True)
+    # [(),()] 轉成 [[],[]]
     std_datas = [[j for j in i] for i in std_datas]
+    # print(std_datas)
     current_score = 501
     current_index = 0
     for index, std in enumerate(std_datas, start=1):

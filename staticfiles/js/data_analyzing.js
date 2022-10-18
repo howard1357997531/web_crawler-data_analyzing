@@ -55,6 +55,9 @@ $(document).ready(function () {
     
     $('.std_edit').submit(function (e) { 
         var s = $(this).serialize()
+        //serialize 後的值
+        //csrfmiddlewaretoken=rMLCG6AgHrPJNq8ieDRGj7bPx1woA2pExK7LK8spr4OrP1HcZUcKjy2NLQ7VWB5H&name=%E5%B0%8F%E5%B0%8F%E5%85%B5&
+        //code=A10020022&sex=%E7%94%B7&chinese=57&english=78&math=88&society=68&science=48
         console.log(s)
         $.ajax({
             type: $(this).attr('method'),
@@ -65,8 +68,8 @@ $(document).ready(function () {
                 console.log(res.bool)
                 if (res.bool == true) {
                     $('.modal').modal('hide');
-                    //$('.datacon').load(location.href + ' .datacon');  //如果html有地方用js改過，
-                    location.reload();                                  //局部reload不會reload js
+                    $('.datacon').load(location.href + ' .datacon');  //如果html有地方用js改過，
+                    //location.reload();                                  //局部reload不會reload js
                 }
                 
             }
@@ -99,8 +102,8 @@ $(document).ready(function () {
                             swal("資料已刪除 ~", {
                                 icon: "success",
                               });
-                            //$('.datacon').load(location.href + ' .datacon');
-                            location.reload();
+                            $('.datacon').load(location.href + ' .datacon');
+                            //location.reload();
                         }
                         
                     }

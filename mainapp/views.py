@@ -19,12 +19,23 @@ def home(request):
 
 
 def apple_news(request):
-    url = 'https://tw.appledaily.com/realtime/hot/'
+    url = 'https://tw.appledaily.com/realtime/recommend/'
     soup = get_soup(url)
     link = soup.find_all('div', class_='flex-feature')
     datas = [[i.find('img').get('data-src'), i.find('a').text.strip(),
               i.find('a').get('href')] for i in link]
     return render(request, 'web_crawler/apple_news.html', locals())
+
+
+def get_url(request):
+    url = 'https://tw.appledaily.com/realtime/' + request.GET.get('url')
+    # print(url)
+    soup = get_soup(url)
+    link = soup.find_all('div', class_='flex-feature')
+    datas = [[i.find('img').get('data-src'), i.find('a').text.strip(),
+              i.find('a').get('href')] for i in link]
+    t = render_to_string('web_crawler/ajax/apple_news.html', {'datas': datas})
+    return JsonResponse({'datas': t})
 
 
 def yahoo_movie(request):
@@ -145,39 +156,4 @@ def get_taiwan_railway_data(request):
     except Exception as e:
         text = '查無資料'
     t = render_to_string('web_crawler/ajax/taiwan_railway.html', locals())
-    return JsonResponse({'data': t})
-
-
-def nba_data(request):
-    return render(request, 'web_crawler/nba_data.html', locals())
-
-
-def get_nba_data(request):
-    api_url = 'https://tw.global.nba.com/stats2/scores/daily.json'
-    date = request.GET['date']
-    params_data = {
-        'countryCode': 'TW',
-        'gameDate': date,
-        'locale': 'zh_TW',
-        'tz': '+8',
-    }
-    try:
-        resp = requests.get(api_url, params=params_data)
-        resp = json.loads(resp.text)
-
-        score = ['q1Score', 'q2Score', 'q3Score', 'q4Score']
-        datas = []
-        for game in (resp['payload']['date']['games']):
-            awayTeam = game['awayTeam']
-            homeTeam = game['homeTeam']
-            data = [awayTeam['profile']['name'], awayTeam['matchup']['wins'], awayTeam['matchup']['losses'],
-                    awayTeam['score']['q1Score'], awayTeam['score']['q2Score'], awayTeam['score']['q3Score'], awayTeam['score']['q4Score'],
-                    awayTeam['score']['score'],
-                    homeTeam['profile']['name'], homeTeam['matchup']['wins'], homeTeam['matchup']['losses'],
-                    homeTeam['score']['q1Score'], homeTeam['score']['q2Score'], homeTeam['score']['q3Score'], homeTeam['score']['q4Score'],
-                    homeTeam['score']['score']]
-            datas.append(data)
-    except Exception as e:
-        text = '當天無比賽'
-    t = render_to_string('web_crawler/ajax/nba_tabledata.html', locals())
     return JsonResponse({'data': t})

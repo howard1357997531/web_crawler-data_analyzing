@@ -32,10 +32,6 @@
                     <td class="p-3"><a href="{% url 'yahoo_movie' %}">查找yahoo電影戲院</a></td>
                     <td class="p-3"><a href="{% url 'taiwan_railway' %}">查找台灣鐵路</a</td>
                 </tr>
-                <tr>
-                    <td class="p-3"><a href="{% url 'nba_data' %}">查找NBA比賽戰績</a></td>
-                    <td></td>
-                </tr>
             </table>
 
             <h2 class="text-center mt-5 mb-4">資料分析</h2>
@@ -44,6 +40,15 @@
                 <tr>
                     <td><a href="{% url 'covid' %}" class="text-danger">台灣疫情報告</a></td>
                     <td><a href="{% url 'student_grade' %}" class="text-danger">學生成績系統</a></td>
+                </tr>
+            </table>
+
+            <h2 class="text-center mt-5 mb-4">小遊戲</h2>
+            <hr>
+            <table class="table table1 text-center">
+                <tr>
+                    <td><a href="{% url 'phone' %}" class="text-danger">手機號碼占圤</a></td>
+                    <td><a href="{% url 'lotto' %}" class="text-danger">樂透</a></td>
                 </tr>
             </table>
         </div>

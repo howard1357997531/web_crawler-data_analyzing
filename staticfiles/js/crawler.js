@@ -1,4 +1,18 @@
 $(document).ready(function () {
+    $(document).on('click','.newBtn', function () {
+        let url = $(this).data('url');
+        console.log(url)
+        $.ajax({
+            url: "/get_url",
+            data: {
+                'url' : url
+            },
+            dataType: "json",
+            success: function (res) {
+                $('.applenew_data').html(res.datas);
+            }   
+        });
+    });
     $(document).on('click','#addCity', function () {
         var city = $('.selector').val();  //獲取當前選中項的value
         console.log(city);
