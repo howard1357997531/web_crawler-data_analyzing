@@ -55,7 +55,7 @@
         const resultTextEl = document.querySelector("#result-text");
         const timeEl = document.querySelector('#time');
         const resultComment = ['吉','兇','吉帶凶','凶帶吉'] 
-        console.log(phoneEl, analyticsEl, resultEl, resultTextEl);
+        ///console.log(phoneEl, analyticsEl, resultEl, resultTextEl);
     
         phoneEl.value = "0988883456";
     
@@ -79,8 +79,8 @@
     
             if (phoneNumber.length < 10) {
                 alert("手機號碼為10個數字!");
-            return;
-        }
+                return;
+            }
     
         //  使用正則式
         const re = /09\d{8}/;
@@ -149,7 +149,7 @@
             // (除以80的結果-整數部分)*80
             let code = parseInt((fourNumber / 80 - parseInt(fourNumber / 80)) * 80);
             code = code < 1 ? 1 : code;
-            console.log(code);
+            console.log('code',code);
             // if (code < 1) {
             //     code = 1;
             // }

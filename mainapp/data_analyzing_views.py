@@ -111,7 +111,7 @@ def covid(request):  # 不能這樣寫 a,b=[Queue()]*2，Queue裡面會一樣
     # Pie1
     data7 = e1.get()
     death_a = [data7.count('男'), data7.count('女')]
-    print(data7)
+
     # Pie2
     data8 = e2.get()
     history = ['有慢性病史', '無']
@@ -221,6 +221,7 @@ def get_grade(request):
         if std['name'] == std_name:
             score_rank = [value for i, value in enumerate(
                 std.values()) if i > 0]
+            # print(score_rank)
     num_of_std = Student.objects.count()
     score_rank2 = [num_of_std-i for i in score_rank]
     score_rank_title = [score_rank]

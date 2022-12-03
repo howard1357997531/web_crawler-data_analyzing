@@ -41,7 +41,6 @@
             </select>
              至 
             <select class="form-select form-select-sm d-inline-block ms-2" id="end_time" style="width: 10%;" aria-label=".form-select-sm example">
-              <option value="23:59" selected>23:59</option>
               {% for time in endtimes %}
               <option value="{{time}}">{{time}}</option>
               {% endfor %}
@@ -49,7 +48,6 @@
             <button class="btn btn-info btn-sm ms-5" id="taiwan_railwayBtn">送出</button>
           </div>
           <hr>
-
           <div id="ajaxtable"></div>
         </div>
     </div>

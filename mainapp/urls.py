@@ -24,7 +24,6 @@ urlpatterns = [
     path('delete_grade/<int:pk>/',
          data_analyzing_views.delete_grade, name='delete_grade'),
 
-
     # littlegame
     path('phone', littlegame_views.phone, name='phone'),
     path('lotto/', littlegame_views.lotto, name='lotto'),
