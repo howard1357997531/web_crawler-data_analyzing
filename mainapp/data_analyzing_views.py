@@ -178,6 +178,7 @@ def student_grade(request):
             return redirect('student_grade')
     else:
         form = StudentForm()
+
     return render(request, 'data_analyzing/student_grade.html', locals())
 
 
@@ -185,7 +186,7 @@ def get_grade(request):
     # 各科成績與全班各科平均比較
     avg = Student.objects.aggregate(Avg('chinese'), Avg(
         'english'), Avg('math'), Avg('society'), Avg('science'))
-    avg_score = [round(j, 1) for i, j in avg.items()]
+    avg_score = [round(value, 1) for key, value in avg.items()]
     std_name = request.GET.get('std_name').strip()
     total = {i[0]: i[1]
              for i in list(Student.objects.values_list('name', 'total_score'))}
@@ -193,7 +194,8 @@ def get_grade(request):
     # dict_items([('阿喜', 405), ('阿賢', 354)...])
     total = [i[0]
              for i in sorted(total.items(), key=lambda x:x[1], reverse=True)]
-    all_name = [i['name'] for i in list(Student.objects.values('name'))]
+    # print(total)
+    all_name = [i['name'] for i in Student.objects.values('name')]
     # print(Student.objects.values('name'))
     # <QuerySet [{'name': '阿喜'}, {'name': '阿賢'}...]>
     try:
@@ -234,6 +236,7 @@ def get_grade(request):
 def get_rank(request):
     std_datas = list(Student.objects.values_list('name', 'code', 'sex', 'chinese',
                                                  'english', 'math', 'society', 'science', 'total_score', 'average_score'))
+    print(std_datas)
     std_datas = sorted(std_datas, key=lambda x: x[8], reverse=True)
     # [(),()] 轉成 [[],[]]
     std_datas = [[j for j in i] for i in std_datas]
