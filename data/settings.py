@@ -26,8 +26,7 @@ SECRET_KEY = "django-insecure-ytl0wp0rs0gph)#rj9c6$@g6t^a25gbs64n^_i3k3ac)&uv^5!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
-                 'web-production-2d76.up.railway.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +41,10 @@ INSTALLED_APPS = [
     'mainapp',
     'crispy_forms'
 ]
+
+# Railway
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['https://web-production-a4c2.up.railway.app']
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -95,10 +98,23 @@ DATABASES = {
         "PORT": "6918",
     }
 }
-'''
+
 import dj_database_url
 DATABASES['default'] = dj_database_url.parse("postgresql://postgres:2CgKybXptGEboOAC56N3@containers-us-west-145.railway.app:6918/railway")
 #print(DATABASES)
+
+#AWS MTSQL
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "railway",     #初始資料庫名稱
+        "USER": "admin",
+        "PASSWORD": "12345678",
+        "HOST": "containers-us-west-145.railway.app",
+        "PORT": "3306",
+    }
+}
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -57,7 +57,6 @@ def get_data(x, y, num1, num2, a1=None):
         a1.put(datas)
     return datas
 
-
 def get_7days_data(x, y, num1, num2, b1=None):
     resp = get_soup(
         'https://covid-19.nchc.org.tw/api/covid19?CK=covid-19@nchc.org.tw&querydata=4051&limited=TWN')

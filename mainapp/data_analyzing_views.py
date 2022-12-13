@@ -158,7 +158,7 @@ def student_grade(request):
     science = len(list(filter(lambda x: x >= 60, [i[4] for i in grades])))
     score_pass = [chinese, english, math, society, science]
     score_fail = [len(grades)-chinese, len(grades)-english,
-                  len(grades)-math, len(grades)-society, len(grades)-science]
+                  len(grades)-math, len(grades)-society, len(grades)-science]           
 
     # 男女各科平均比較
     boyavg = Student.objects.filter(sex='男').aggregate(

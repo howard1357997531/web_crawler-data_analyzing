@@ -138,8 +138,8 @@
           label: '七日平均移動值',
           backgroundColor: 'rgba(0, 255, 72, 0.705)',
           borderColor: 'rgba(0, 255, 72, 0.705)',
-          data: {{datas_7|safe}},
-          tension:0.4,
+          data: {{datas_7|safe}},                     //接受格式[{1: '2022-01-01', 2: '22.714'},
+          tension:0.4,                                // {1: '2022-01-02', 2: '22.143'}...]
           pointRadius: 2.5,  
           pointBackgroundColor: 'white',  
         //pointBorderWidth: 2,
